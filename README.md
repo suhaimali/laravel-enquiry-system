@@ -81,6 +81,32 @@ All extra routes have been cleaned up. The application exposes the following end
 
 ---
 
+## 🐙 Git Setup & Deployment
+
+To initialize and push this repository to your GitHub account, run the following commands:
+
+```bash
+# Initialize local Git repository
+git init
+
+# Add all files to staging area
+git add .
+
+# Create initial commit
+git commit -m "Initial commit - Laravel Enquiry System"
+
+# Rename branch to main
+git branch -M main
+
+# Add origin remote link
+git remote add origin https://github.com/suhaimali/laravel-enquiry-system.git
+
+# Push code to main branch
+git push -u origin main
+```
+
+---
+
 ## 🎓 Beginner-Friendly MVC Architecture Guide
 
 To understand how the enquiry form works under the hood, here is a simple breakdown of the Model-View-Controller (MVC) flow used in this application:

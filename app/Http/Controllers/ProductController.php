@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = \App\Models\Product::where('is_available', true)->latest()->get();
+        $products = Product::where('is_available', true)->latest()->get();
         return view('products', compact('products'));
     }
 
@@ -20,15 +22,17 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        Product::create($request->validated());
+
+        return redirect()->back()->with('success', 'Product saved successfully.');
     }
 
     /**

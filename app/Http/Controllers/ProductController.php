@@ -11,9 +11,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = \App\Models\Product::latest()->get();
-
-        return view('products.index', compact('products'));
+        $products = \App\Models\Product::where('is_available', true)->latest()->get();
+        return view('products', compact('products'));
     }
 
     /**

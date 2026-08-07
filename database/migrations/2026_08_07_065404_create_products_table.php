@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_code')->nullable()->unique();
+            $table->string('product_code')->unique()->nullable();
             $table->string('name');
             $table->string('category')->nullable();
             $table->string('brand')->nullable();
             $table->text('short_description')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0.00);
+            $table->decimal('price', 10, 2);
             $table->decimal('discount', 10, 2)->default(0.00);
-            $table->decimal('final_price', 10, 2)->default(0.00);
+            $table->decimal('final_price', 10, 2)->nullable();
             $table->integer('stock_quantity')->default(0);
             $table->integer('min_stock_level')->default(0);
             $table->string('unit')->nullable();
             $table->string('color')->nullable();
             $table->string('size')->nullable();
             $table->string('material')->nullable();
-            $table->string('weight')->nullable();
-            $table->string('status')->default('active');
+            $table->decimal('weight', 8, 2)->nullable();
+            $table->string('status')->nullable();
             $table->boolean('featured')->default(false);
             $table->boolean('is_available')->default(true);
             $table->unsignedBigInteger('created_by')->nullable();

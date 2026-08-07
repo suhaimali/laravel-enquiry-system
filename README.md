@@ -1,32 +1,51 @@
-# Enquiry Form System (Laravel Project)
+# Laravel Enquiry & Product Management System
 
-A clean, responsive, and fully-functional **Enquiry Form System** built with Laravel 12.x, PHP 8.2, and MySQL.
+A clean, responsive, and fully-functional **Enquiry Form System** and **Product Management Dashboard** built with Laravel 12.x, PHP 8.2, and MySQL.
 
 ---
 
 ## 🛠️ Features
+
+### Product Management (CRUD)
+- **Products Dashboard**: A clean and simple list view (`/products`) of all available products with status badges and dynamic price calculations.
+- **Product Creation & Editing**: Comprehensive forms to add or modify products with multiple fields (code, category, price, discount, stock, etc.).
+- **Robust Backend**: Handles optional fields smoothly (converting empty strings to valid defaults) and correctly processes boolean checkboxes (like `featured` and `is_available`).
+- **Dynamic Pricing**: Automatically calculates final prices using base prices and percentage discounts directly on the backend.
+
+### Enquiry System
 - **Clean Responsive Form**: A light-themed, modern form utilizing standard inputs (`Full Name`, `Email Address`, `Phone Number`, `Subject`, and `Message`).
 - **Form Validation**: Server-side error validation with dynamic helper feedback using Laravel `@error` directives.
 - **Persistent Data**: Preserves user input across validation errors using `old()` helper.
 - **Notification Banner**: Displays clear success and warning feedback alerts on action completion.
-- **Root URL Access**: Seamlessly forwards the home route `/` directly to the enquiry form.
 
 ---
 
 ## 💾 Database Schema
 
-The system uses the `enquiries` table with the following layout:
+### `products` Table
+| Field | Type | Description |
+|---|---|---|
+| **id** | `BIGINT` | Primary Key |
+| **product_code** | `VARCHAR(255)` | Unique code for the product |
+| **name** | `VARCHAR(255)` | Product name |
+| **category, brand** | `VARCHAR(255)` | Categorization details |
+| **short_description, description** | `TEXT` | Product details and specifications |
+| **price, discount, final_price** | `DECIMAL(10,2)` | Pricing information (default 0.00) |
+| **stock_quantity, min_stock_level** | `INT` | Inventory tracking (default 0) |
+| **unit, color, size, material** | `VARCHAR(255)` | Product attributes |
+| **weight** | `DECIMAL(10,2)` | Product weight in kg |
+| **status** | `VARCHAR(255)` | active, inactive, draft (default 'active') |
+| **featured, is_available** | `BOOLEAN` | Toggles for product visibility |
 
-| Field | Type | Attributes | Description |
-|---|---|---|---|
-| **id** | `BIGINT` | Auto-Increment, Primary Key | Unique ID of the enquiry |
-| **name** | `VARCHAR(255)` | Nullable | Full name of the sender |
-| **email** | `VARCHAR(255)` | Required | Email address of the sender |
-| **phone** | `VARCHAR(15)` | Nullable | Contact number (up to 15 digits) |
-| **subject** | `VARCHAR(255)` | Nullable | Message subject line |
-| **message** | `TEXT` | Required | Detailed body text |
-| **created_at** | `TIMESTAMP` | Nullable | Creation timestamp |
-| **updated_at** | `TIMESTAMP` | Nullable | Last update timestamp |
+### `enquiries` Table
+| Field | Type | Description |
+|---|---|---|
+| **id** | `BIGINT` | Primary Key |
+| **name** | `VARCHAR(255)` | Full name of the sender |
+| **email** | `VARCHAR(255)` | Email address of the sender |
+| **phone** | `VARCHAR(15)` | Contact number |
+| **subject** | `VARCHAR(255)` | Message subject line |
+| **message** | `TEXT` | Detailed body text |
 
 ---
 
@@ -34,26 +53,25 @@ The system uses the `enquiries` table with the following layout:
 
 The application exposes the following endpoints:
 
-| Method | URI | Action | Route Name | Description |
-|---|---|---|---|---|
-| **GET** | `/` | `EnquiryController@create` | `enquiry.create` | Displays enquiry form at home |
-| **GET** | `/enquiry` | `EnquiryController@create` | N/A | Displays enquiry form |
-| **POST** | `/enquiry` | `EnquiryController@store` | `enquiry.store` | Submits form & saves to database |
+| Method | URI | Action | Description |
+|---|---|---|---|
+| **GET** | `/` | `EnquiryController@create` | Displays enquiry form at home |
+| **GET** | `/enquiry` | `EnquiryController@create` | Displays enquiry form |
+| **POST** | `/enquiry` | `EnquiryController@store` | Submits enquiry to database |
+| **RESOURCE**| `/products` | `ProductController` | Standard resource routes (index, create, store, show, edit, update, destroy) |
 
 ---
 
-## 🔧 Bug Fixes Completed
+## 🔧 Bug Fixes & Refactoring
 
-1. **Unknown Column Errors**:
-   - The initial database migration was missing the target columns (`email`, `phone`, `subject`, `message`). 
-   - Consolidated all columns into the main `create_enquiries_table` migration, removed the redundant `add_name_to_enquiries_table` migration, and rebuilt the database using `php artisan migrate:fresh`.
-2. **Method Not Allowed HTTP Exception (405)**:
-   - Fixed route errors where direct `GET` requests to `/enquiry` threw errors by registering an explicit GET handler.
-3. **Redundant Code Removal**:
-   - Cleaned up the views directory, keeping only the [enquiry.blade.php](resources/views/enquiry.blade.php) form template.
-   - Removed all unused controller files (`FeedbackController.php`) and old test views.
-4. **Trait Compilation Fix**:
-   - Resolved a compile-time error where `Product` model class imports were incorrectly placed inside the base abstract `Controller` class body, causing PHP to mistake them for Traits. Kept base controller standard.
+1. **Unchecked Checkbox Bug**: 
+   - Fixed a classic form submission bug in `ProductController` where unchecked boolean fields (`featured`, `is_available`) weren't passed in the request, causing them to fall back incorrectly. They now explicitly save as `false` when unchecked.
+2. **Empty Numeric Fields Crash**: 
+   - Fixed a bug where leaving optional numeric fields (like discount) blank passed `null` to the database, violating strict constraints. They now correctly fall back to `0`.
+3. **Math Calculation Errors (PHP 8)**: 
+   - Fixed a frontend blade issue where `final_price` calculations crashed if `discount` was null. Calculations are now cleanly handled in the backend during `store` and `update`.
+4. **UI Standardization**:
+   - Simplified the aesthetic of the Products Dashboard and forms, moving away from complex glassmorphism to a cleaner, simple, and professional light-themed UI matching standard Bootstrap 5.
 
 ---
 
@@ -78,75 +96,17 @@ The application exposes the following endpoints:
    php artisan serve
    ```
 4. **Access in Browser**:
-   * Home URL: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-   * Enquiry URL: [http://127.0.0.1:8000/enquiry](http://127.0.0.1:8000/enquiry)
+   * Enquiry Form: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+   * Products Dashboard: [http://127.0.0.1:8000/products](http://127.0.0.1:8000/products)
 
 ---
 
 ## 🐙 Git Setup & Deployment
 
-To initialize and push this repository to your GitHub account, run the following commands:
+To push this repository to your GitHub account:
 
 ```bash
-# Initialize local Git repository
-git init
-
-# Add all files to staging area
 git add .
-
-# Create initial commit
-git commit -m "Initial commit - Laravel Enquiry System"
-
-# Rename branch to main
-git branch -M main
-
-# Add origin remote link
-git remote add origin https://github.com/suhaimali/laravel-enquiry-system.git
-
-# Push code to main branch
-git push -u origin main
+git commit -m "Added Product Management CRUD and fixed UI/Backend bugs"
+git push origin main
 ```
-
----
-
-## 🎓 Beginner-Friendly MVC Architecture Guide
-
-To understand how the enquiry form works under the hood, here is a simple breakdown of the Model-View-Controller (MVC) flow used in this application:
-
-```mermaid
-graph TD
-    User([User Browser]) -->|1. GET /enquiry| Router[routes/web.php]
-    Router -->|2. Route Match| Controller[EnquiryController.php]
-    Controller -->|3. Loads template| View[enquiry.blade.php]
-    View -->|4. Renders HTML form| User
-    User -->|5. Submits POST Form| Router
-    Router -->|6. Validates & Saves| Controller
-    Controller -->|7. Inserts Data| Model[Enquiry.php]
-    Model -->|8. Database Record| DB[(MySQL Database)]
-    Controller -->|9. Redirect Back with Success| User
-```
-
-### 1. The Route (The Map)
-Defined in [routes/web.php](routes/web.php), the route directs incoming URLs to the correct controller methods:
-* `Route::get('/enquiry', ...)` matches when someone visits the page.
-* `Route::post('/enquiry', ...)` matches when someone submits the form.
-
-### 2. The Controller (The Brain)
-Located at [app/Http/Controllers/EnquiryController.php](app/Http/Controllers/EnquiryController.php):
-* **`create()`**: Loads and returns the [enquiry.blade.php](resources/views/enquiry.blade.php) view.
-* **`store()`**: 
-  1. Checks if user inputs are valid (e.g. valid email, not too long).
-  2. Uses the **Model** to save data to the database.
-  3. Redirects the user back to the form with a success session message.
-
-### 3. The Model (The Data Gateway)
-Located at [app/Models/Enquiry.php](app/Models/Enquiry.php):
-* Represents the `enquiries` database table in PHP code.
-* The `$fillable` array lists fields we can mass-assign (`name`, `email`, `phone`, `subject`, `message`), keeping database queries safe.
-
-### 4. The View (The Presentation)
-Located at [resources/views/enquiry.blade.php](resources/views/enquiry.blade.php):
-* HTML & CSS code to render the form.
-* **`@csrf`**: Adds security tokens to prevent form spoofing.
-* **`old('field_name')`**: Restores previously entered data if the validation fails.
-* **`session('success')`**: Automatically shows a success message alert box when the form submits cleanly.

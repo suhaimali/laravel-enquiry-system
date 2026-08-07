@@ -15,3 +15,6 @@ Route::get('/', [EnquiryController::class, 'create'])->name('enquiry.create');
 // Enquiry
 Route::get('/enquiry', [EnquiryController::class, 'create']);
 Route::post('/enquiry', [EnquiryController::class, 'store'])->name('enquiry.store');
+use App\Http\Controllers\ProductController;
+
+Route::resource('products', ProductController::class);

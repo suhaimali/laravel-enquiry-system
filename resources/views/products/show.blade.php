@@ -64,7 +64,7 @@
             <!-- Final Price -->
             <div class="col-md-4">
                 <span class="text-muted d-block small">Final Price</span>
-                <strong class="text-primary h5">${{ number_format($product->final_price ?? ($product->price - ($product->price * ($product->discount / 100))), 2) }}</strong>
+                <strong class="text-primary h5">${{ number_format($product->final_price, 2) }}</strong>
             </div>
 
             <!-- Stock Quantity -->

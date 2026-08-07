@@ -1,262 +1,174 @@
 <style>
-    :root {
-        --primary-grad: linear-gradient(135deg, #ff007f 0%, #7f00ff 50%, #00f0ff 100%);
-        --bg-color: #0b071e;
-        --card-bg: rgba(255, 255, 255, 0.04);
-        --card-border: rgba(255, 255, 255, 0.08);
-        --text-primary: #ffffff;
-        --text-secondary: #b5b2c9;
-        --input-bg: rgba(255, 255, 255, 0.05);
-        --input-border: rgba(255, 255, 255, 0.1);
-        --input-focus: #00f0ff;
-        --success-color: #00ff88;
-        --error-color: #ff3b30;
-        --accent-glow: rgba(0, 240, 255, 0.15);
+    .form-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8fafc;
+        padding: 2rem 1rem;
+        font-family: 'Inter', sans-serif;
     }
-
-    .colorful-card {
-        background: var(--card-bg) !important;
-        border: 1px solid var(--card-border) !important;
-        border-radius: 20px !important;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
-        color: var(--text-primary) !important;
-        padding: 1.5rem;
-    }
-
-    .colorful-title {
-        background: var(--primary-grad);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-    }
-
-    .colorful-label {
-        font-weight: 600 !important;
-        font-size: 0.85rem !important;
-        color: var(--text-secondary) !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .colorful-input {
-        background: var(--input-bg) !important;
-        border: 1px solid var(--input-border) !important;
-        color: var(--text-primary) !important;
-        border-radius: 10px !important;
-        padding: 0.75rem 1rem !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .colorful-input:focus {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border-color: transparent !important;
-        box-shadow: 0 0 0 2px var(--input-focus), 0 8px 20px var(--accent-glow) !important;
-        outline: none !important;
-    }
-
-    .colorful-input::placeholder {
-        color: rgba(255, 255, 255, 0.25) !important;
-    }
-
-    .colorful-inputoption {
-        background-color: var(--bg-color) !important;
-        color: var(--text-primary) !important;
-    }
-
-    .btn-colorful-primary {
-        background: var(--primary-grad) !important;
-        color: #ffffff !important;
-        border: none !important;
-        font-weight: 700 !important;
-        padding: 0.8rem 2rem !important;
-        border-radius: 10px !important;
-        box-shadow: 0 4px 15px rgba(127, 0, 255, 0.3) !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .btn-colorful-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(127, 0, 255, 0.45) !important;
-    }
-
-    .btn-colorful-secondary {
-        background: rgba(255, 255, 255, 0.08) !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--card-border) !important;
-        font-weight: 600 !important;
-        padding: 0.8rem 2rem !important;
-        border-radius: 10px !important;
-        transition: all 0.3s ease !important;
-    }
-
-    .btn-colorful-secondary:hover {
-        background: rgba(255, 255, 255, 0.12) !important;
-        color: #ffffff !important;
-    }
-
-    .form-check-input {
-        background-color: var(--input-bg) !important;
-        border-color: var(--input-border) !important;
-    }
-
-    .form-check-input:checked {
-        background-image: var(--primary-grad) !important;
-        border-color: transparent !important;
+    .simple-card {
+        width: 100%;
+        max-width: 800px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     }
 </style>
 
-<div class="card colorful-card mx-auto" style="max-width: 800px;">
-    <div class="card-header bg-transparent border-0 py-3">
-        <h1 class="h3 mb-0 colorful-title">Add New Product</h1>
-    </div>
-    
-    <div class="card-body">
-        @if($errors->any())
-            <div class="alert alert-danger bg-danger-subtle border-danger text-danger-emphasis rounded-3">
-                <ul class="mb-0">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('products.store') }}" method="POST">
-            @csrf
-
-            <div class="row g-3">
-                <!-- Product Code -->
-                <div class="col-md-6">
-                    <label for="product_code" class="form-label colorful-label">Product Code</label>
-                    <input type="text" name="product_code" id="product_code" class="form-control colorful-input" value="{{ old('product_code') }}" placeholder="e.g. PROD-101">
+<div class="form-wrapper">
+    <div class="card simple-card p-4">
+        <div class="card-header bg-transparent border-0 ps-0 pb-3">
+            <h1 class="h3 mb-0 text-dark fw-bold">Add New Product</h1>
+        </div>
+        
+        <div class="card-body px-0 pb-0">
+            @if($errors->any())
+                <div class="alert alert-danger py-2 px-3 rounded-3 mb-4">
+                    <ul class="mb-0 small">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
+            @endif
 
-                <!-- Name -->
-                <div class="col-md-6">
-                    <label for="name" class="form-label colorful-label">Product Name <span class="text-danger">*</span></label>
-                    <input type="text" name="name" id="name" class="form-control colorful-input" value="{{ old('name') }}" placeholder="e.g. Wireless Mouse" required>
-                </div>
+            <form action="{{ route('products.store') }}" method="POST">
+                @csrf
 
-                <!-- Category -->
-                <div class="col-md-6">
-                    <label for="category" class="form-label colorful-label">Category</label>
-                    <input type="text" name="category" id="category" class="form-control colorful-input" value="{{ old('category') }}" placeholder="e.g. Electronics">
-                </div>
-
-                <!-- Brand -->
-                <div class="col-md-6">
-                    <label for="brand" class="form-label colorful-label">Brand</label>
-                    <input type="text" name="brand" id="brand" class="form-control colorful-input" value="{{ old('brand') }}" placeholder="e.g. Logitech">
-                </div>
-
-                <!-- Short Description -->
-                <div class="col-12">
-                    <label for="short_description" class="form-label colorful-label">Short Description</label>
-                    <input type="text" name="short_description" id="short_description" class="form-control colorful-input" value="{{ old('short_description') }}" placeholder="Brief summary of the product">
-                </div>
-
-                <!-- Description -->
-                <div class="col-12">
-                    <label for="description" class="form-label colorful-label">Detailed Description</label>
-                    <textarea name="description" id="description" class="form-control colorful-input" rows="3" placeholder="Full product specifications and details">{{ old('description') }}</textarea>
-                </div>
-
-                <!-- Price -->
-                <div class="col-md-4">
-                    <label for="price" class="form-label colorful-label">Price ($) <span class="text-danger">*</span></label>
-                    <input type="number" step="0.01" name="price" id="price" class="form-control colorful-input" value="{{ old('price') }}" placeholder="0.00" required>
-                </div>
-
-                <!-- Discount -->
-                <div class="col-md-4">
-                    <label for="discount" class="form-label colorful-label">Discount (%)</label>
-                    <input type="number" step="0.01" name="discount" id="discount" class="form-control colorful-input" value="{{ old('discount', 0) }}" placeholder="0.00">
-                </div>
-
-                <!-- Final Price -->
-                <div class="col-md-4">
-                    <label for="final_price" class="form-label colorful-label">Final Price ($)</label>
-                    <input type="number" step="0.01" name="final_price" id="final_price" class="form-control colorful-input" value="{{ old('final_price') }}" placeholder="Leave blank to auto-calculate">
-                </div>
-
-                <!-- Stock Quantity -->
-                <div class="col-md-4">
-                    <label for="stock_quantity" class="form-label colorful-label">Stock Quantity</label>
-                    <input type="number" name="stock_quantity" id="stock_quantity" class="form-control colorful-input" value="{{ old('stock_quantity', 0) }}">
-                </div>
-
-                <!-- Min Stock Level -->
-                <div class="col-md-4">
-                    <label for="min_stock_level" class="form-label colorful-label">Min Stock Level</label>
-                    <input type="number" name="min_stock_level" id="min_stock_level" class="form-control colorful-input" value="{{ old('min_stock_level', 0) }}">
-                </div>
-
-                <!-- Unit -->
-                <div class="col-md-4">
-                    <label for="unit" class="form-label colorful-label">Unit</label>
-                    <input type="text" name="unit" id="unit" class="form-control colorful-input" value="{{ old('unit', 'pcs') }}" placeholder="e.g. pcs, box, kg">
-                </div>
-
-                <!-- Color -->
-                <div class="col-md-3">
-                    <label for="color" class="form-label colorful-label">Color</label>
-                    <input type="text" name="color" id="color" class="form-control colorful-input" value="{{ old('color') }}" placeholder="e.g. Black">
-                </div>
-
-                <!-- Size -->
-                <div class="col-md-3">
-                    <label for="size" class="form-label colorful-label">Size</label>
-                    <input type="text" name="size" id="size" class="form-control colorful-input" value="{{ old('size') }}" placeholder="e.g. Medium, 14 inch">
-                </div>
-
-                <!-- Material -->
-                <div class="col-md-3">
-                    <label for="material" class="form-label colorful-label">Material</label>
-                    <input type="text" name="material" id="material" class="form-control colorful-input" value="{{ old('material') }}" placeholder="e.g. Plastic">
-                </div>
-
-                <!-- Weight -->
-                <div class="col-md-3">
-                    <label for="weight" class="form-label colorful-label">Weight (kg)</label>
-                    <input type="number" step="0.01" name="weight" id="weight" class="form-control colorful-input" value="{{ old('weight') }}" placeholder="0.00">
-                </div>
-
-                <!-- Status -->
-                <div class="col-md-6">
-                    <label for="status" class="form-label colorful-label">Status</label>
-                    <select name="status" id="status" class="form-select colorful-input">
-                        <option value="active" class="colorful-inputoption" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" class="colorful-inputoption" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                        <option value="draft" class="colorful-inputoption" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                    </select>
-                </div>
-
-                <!-- Checkboxes (Featured & Available) -->
-                <div class="col-md-6 d-flex align-items-end pb-2">
-                    <div class="form-check me-4">
-                        <input class="form-check-input" type="checkbox" name="featured" id="featured" value="1" {{ old('featured') ? 'checked' : '' }}>
-                        <label class="form-check-label fw-semibold text-light" for="featured">
-                            Featured
-                        </label>
+                <div class="row g-3">
+                    <!-- Product Code -->
+                    <div class="col-md-6">
+                        <label for="product_code" class="form-label text-secondary fw-semibold small">Product Code</label>
+                        <input type="text" name="product_code" id="product_code" class="form-control border-secondary-subtle" value="{{ old('product_code') }}" placeholder="e.g. PROD-101">
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="is_available" id="is_available" value="1" {{ old('is_available', 1) ? 'checked' : '' }}>
-                        <label class="form-check-label fw-semibold text-light" for="is_available">
-                            Available
-                        </label>
+
+                    <!-- Name -->
+                    <div class="col-md-6">
+                        <label for="name" class="form-label text-secondary fw-semibold small">Product Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" id="name" class="form-control border-secondary-subtle" value="{{ old('name') }}" placeholder="e.g. Wireless Mouse" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="col-md-6">
+                        <label for="category" class="form-label text-secondary fw-semibold small">Category</label>
+                        <input type="text" name="category" id="category" class="form-control border-secondary-subtle" value="{{ old('category') }}" placeholder="e.g. Electronics">
+                    </div>
+
+                    <!-- Brand -->
+                    <div class="col-md-6">
+                        <label for="brand" class="form-label text-secondary fw-semibold small">Brand</label>
+                        <input type="text" name="brand" id="brand" class="form-control border-secondary-subtle" value="{{ old('brand') }}" placeholder="e.g. Logitech">
+                    </div>
+
+                    <!-- Short Description -->
+                    <div class="col-12">
+                        <label for="short_description" class="form-label text-secondary fw-semibold small">Short Description</label>
+                        <input type="text" name="short_description" id="short_description" class="form-control border-secondary-subtle" value="{{ old('short_description') }}" placeholder="Brief summary of the product">
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label for="description" class="form-label text-secondary fw-semibold small">Detailed Description</label>
+                        <textarea name="description" id="description" class="form-control border-secondary-subtle" rows="3" placeholder="Full product specifications and details">{{ old('description') }}</textarea>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="col-md-4">
+                        <label for="price" class="form-label text-secondary fw-semibold small">Price ($) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" name="price" id="price" class="form-control border-secondary-subtle" value="{{ old('price') }}" placeholder="0.00" required>
+                    </div>
+
+                    <!-- Discount -->
+                    <div class="col-md-4">
+                        <label for="discount" class="form-label text-secondary fw-semibold small">Discount (%)</label>
+                        <input type="number" step="0.01" name="discount" id="discount" class="form-control border-secondary-subtle" value="{{ old('discount', 0) }}" placeholder="0.00">
+                    </div>
+
+                    <!-- Final Price -->
+                    <div class="col-md-4">
+                        <label for="final_price" class="form-label text-secondary fw-semibold small">Final Price ($)</label>
+                        <input type="number" step="0.01" name="final_price" id="final_price" class="form-control border-secondary-subtle" value="{{ old('final_price') }}" placeholder="Leave blank to auto-calculate">
+                    </div>
+
+                    <!-- Stock Quantity -->
+                    <div class="col-md-4">
+                        <label for="stock_quantity" class="form-label text-secondary fw-semibold small">Stock Quantity</label>
+                        <input type="number" name="stock_quantity" id="stock_quantity" class="form-control border-secondary-subtle" value="{{ old('stock_quantity', 0) }}">
+                    </div>
+
+                    <!-- Min Stock Level -->
+                    <div class="col-md-4">
+                        <label for="min_stock_level" class="form-label text-secondary fw-semibold small">Min Stock Level</label>
+                        <input type="number" name="min_stock_level" id="min_stock_level" class="form-control border-secondary-subtle" value="{{ old('min_stock_level', 0) }}">
+                    </div>
+
+                    <!-- Unit -->
+                    <div class="col-md-4">
+                        <label for="unit" class="form-label text-secondary fw-semibold small">Unit</label>
+                        <input type="text" name="unit" id="unit" class="form-control border-secondary-subtle" value="{{ old('unit', 'pcs') }}" placeholder="e.g. pcs, box, kg">
+                    </div>
+
+                    <!-- Color -->
+                    <div class="col-md-3">
+                        <label for="color" class="form-label text-secondary fw-semibold small">Color</label>
+                        <input type="text" name="color" id="color" class="form-control border-secondary-subtle" value="{{ old('color') }}" placeholder="e.g. Black">
+                    </div>
+
+                    <!-- Size -->
+                    <div class="col-md-3">
+                        <label for="size" class="form-label text-secondary fw-semibold small">Size</label>
+                        <input type="text" name="size" id="size" class="form-control border-secondary-subtle" value="{{ old('size') }}" placeholder="e.g. Medium, 14 inch">
+                    </div>
+
+                    <!-- Material -->
+                    <div class="col-md-3">
+                        <label for="material" class="form-label text-secondary fw-semibold small">Material</label>
+                        <input type="text" name="material" id="material" class="form-control border-secondary-subtle" value="{{ old('material') }}" placeholder="e.g. Plastic">
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="col-md-3">
+                        <label for="weight" class="form-label text-secondary fw-semibold small">Weight (kg)</label>
+                        <input type="number" step="0.01" name="weight" id="weight" class="form-control border-secondary-subtle" value="{{ old('weight') }}" placeholder="0.00">
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label for="status" class="form-label text-secondary fw-semibold small">Status</label>
+                        <select name="status" id="status" class="form-select border-secondary-subtle">
+                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                        </select>
+                    </div>
+
+                    <!-- Checkboxes (Featured & Available) -->
+                    <div class="col-md-6 d-flex align-items-end pb-2">
+                        <div class="form-check me-4">
+                            <input class="form-check-input border-secondary-subtle" type="checkbox" name="featured" id="featured" value="1" {{ old('featured') ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold text-secondary small" for="featured">
+                                Featured
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input border-secondary-subtle" type="checkbox" name="is_available" id="is_available" value="1" {{ old('is_available', 1) ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold text-secondary small" for="is_available">
+                                Available
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <hr class="my-4 border-secondary opacity-25">
+                <hr class="my-4 text-secondary-subtle">
 
-            <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('products.index') }}" class="btn btn-colorful-secondary">Cancel</a>
-                <button type="submit" class="btn btn-colorful-primary">Save Product</button>
-            </div>
-        </form>
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ route('products.index') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4">Save Product</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

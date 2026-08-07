@@ -2,10 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\ProductController;
 
-// Show form on both the home path and /enquiry
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Home
 Route::get('/', [EnquiryController::class, 'create'])->name('enquiry.create');
-Route::get('/enquiry', [EnquiryController::class, 'create']);
 
-// Handle form submission
+// Enquiry
+Route::get('/enquiry', [EnquiryController::class, 'create']);
 Route::post('/enquiry', [EnquiryController::class, 'store'])->name('enquiry.store');
+
+// Products
+Route::resource('products', ProductController::class);

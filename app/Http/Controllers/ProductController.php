@@ -11,7 +11,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = \App\Models\Product::latest()->get();
+
+        return view('products.index', compact('products'));
     }
 
     /**
